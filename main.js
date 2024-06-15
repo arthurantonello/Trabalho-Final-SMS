@@ -1,18 +1,8 @@
 const PromptSync = require("prompt-sync");
 const prompt = PromptSync();
 
-//Variáveis
-// let xi = Number(prompt("Insira o valor de xi: "));
-// let a = Number(prompt("Insira o valor de a: "));
-// let c = Number(prompt("Insira o valor de c: "));
-// let m = Number(prompt("Insira o valor de m: "));
-
-// let tempo_medio_chegada = Number(prompt("Insira o tempo médio entre chegadas (exponencial): "));
-// let tempo_medio_atendimento = Number(prompt("Insira o tempo médio entre atendimentos (exponencial): "));
-// let tempo_simulacao = Number(prompt("Insira o tempo de simulação (minutos): "));
-
-//Variáveis utilizadas pelo grupo
-let xi = 123456;
+//Variáveis de teste
+let x0 = 123456;
 let a = 1103515245;
 let c = 12345;
 let m = 2147483648;
@@ -22,7 +12,18 @@ let tempo_medio_atendimento = 0.5;
 let tempo_simulacao = 480;
 //
 
+//Prompt de variáveis
+// let x0 = Number(prompt("Insira o valor de x0: "));
+// let a = Number(prompt("Insira o valor de a: "));
+// let c = Number(prompt("Insira o valor de c: "));
+// let m = Number(prompt("Insira o valor de m: "));
 
+// let tempo_medio_chegada = Number(prompt("Insira o tempo médio entre chegadas (exponencial): "));
+// let tempo_medio_atendimento = Number(prompt("Insira o tempo médio entre atendimentos (exponencial): "));
+// let tempo_simulacao = Number(prompt("Insira o tempo de simulação (minutos): "));
+//
+
+//Variáveis gerais
 let status_servidor = 0;
 let numero_em_fila = 0;
 let fila_chegada = [];
@@ -41,28 +42,11 @@ function aguardar(segundos) {
     return new Promise((resolve) => setTimeout(resolve, segundos));
 }
 
-function gerarChegada() {
-    let semente = (xi * a + c) % m;
-    let npa = semente / (m - 1);
-    let numeroAleatorio = Math.abs(Math.log(npa) * tempo_medio_chegada);
 
-    xi = semente;
 
-    return numeroAleatorio;
-}
 
-function gerarSaida() {
-    let semente = (xi * a + c) % m;
-    let npa = semente / (m - 1);
-    let numeroAleatorio = Math.abs(Math.log(npa) * tempo_medio_atendimento);
-
-    xi = semente;
-
-    return numeroAleatorio;
-}
 
 //Exibe todos os estados em tempo real.
- 
 function exibirEstados() {
     let proximaSaida = proxima_saida !== 9999999999 ? proxima_saida.toFixed(2) : proxima_saida;
 
@@ -88,22 +72,17 @@ function exibirEstados() {
   `);
 }
 
-//Calculos
-function calcularAreaQt() {
-    area_sob_qt += (relogio_simulacao - tempo_ultimo_evento) * numero_em_fila;
+//Evento de chegada.
+function gerarChegada() {
+    let semente = (x0 * a + c) % m;
+    let npa = semente / (m - 1);
+    let numeroAleatorio = Math.abs(Math.log(npa) * tempo_medio_chegada);
+
+    x0 = semente;
+
+    return numeroAleatorio;
 }
 
-function calcularAreaUt() {
-    area_sob_ut += (relogio_simulacao - tempo_ultimo_evento) * status_servidor;
-}
-
-//Remoção da fila
-function removerDaFila() {
-    fila_chegada.shift();
-    numero_em_fila = fila_chegada.length;
-}
-
-//Evento de CHEGADA.
 function processarChegada(chegada) {
     relogio_simulacao = chegada;
 
@@ -123,7 +102,17 @@ function processarChegada(chegada) {
     tempo_ultimo_evento = relogio_simulacao;
 }
 
-//Evento de SAÍDA.
+//Evento de saída.
+function gerarSaida() {
+    let semente = (x0 * a + c) % m;
+    let npa = semente / (m - 1);
+    let numeroAleatorio = Math.abs(Math.log(npa) * tempo_medio_atendimento);
+
+    x0 = semente;
+
+    return numeroAleatorio;
+}
+
 function processarSaida(saida) {
     relogio_simulacao = saida;
 
@@ -142,6 +131,21 @@ function processarSaida(saida) {
 
     tempo_ultimo_evento = relogio_simulacao;
     clientes_atendidos++;
+}
+
+//Remoção da fila
+function removerDaFila() {
+    fila_chegada.shift();
+    numero_em_fila = fila_chegada.length;
+}
+
+//Calculos de área
+function calcularAreaQt() {
+    area_sob_qt += (relogio_simulacao - tempo_ultimo_evento) * numero_em_fila;
+}
+
+function calcularAreaUt() {
+    area_sob_ut += (relogio_simulacao - tempo_ultimo_evento) * status_servidor;
 }
 
 //Alterna entre os eventos de chegada (C) e de saída (S).
