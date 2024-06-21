@@ -2,25 +2,25 @@ const PromptSync = require("prompt-sync");
 const prompt = PromptSync();
 
 //Variáveis de teste
-let x0 = 123456;
-let a = 1103515245;
-let c = 12345;
-let m = 2147483648;
+// let x0 = 123456;
+// let a = 1103515245;
+// let c = 12345;
+// let m = 2147483648;
 
-let tempo_medio_chegada = 1;
-let tempo_medio_atendimento = 0.5;
-let tempo_simulacao = 480;
+// let tempo_medio_chegada = 1;
+// let tempo_medio_atendimento = 0.5;
+// let tempo_simulacao = 480;
 //
 
 //Prompt de variáveis
-// let x0 = Number(prompt("Insira o valor de x0: "));
-// let a = Number(prompt("Insira o valor de a: "));
-// let c = Number(prompt("Insira o valor de c: "));
-// let m = Number(prompt("Insira o valor de m: "));
+let x0 = Number(prompt("Insira o valor de x0: "));
+let a = Number(prompt("Insira o valor de a: "));
+let c = Number(prompt("Insira o valor de c: "));
+let m = Number(prompt("Insira o valor de m: "));
 
-// let tempo_medio_chegada = Number(prompt("Insira o tempo médio entre chegadas (exponencial): "));
-// let tempo_medio_atendimento = Number(prompt("Insira o tempo médio entre atendimentos (exponencial): "));
-// let tempo_simulacao = Number(prompt("Insira o tempo de simulação (minutos): "));
+let tempo_medio_chegada = Number(prompt("Insira o tempo médio entre chegadas (exponencial): "));
+let tempo_medio_atendimento = Number(prompt("Insira o tempo médio entre atendimentos (exponencial): "));
+let tempo_simulacao = Number(prompt("Insira o tempo de simulação (minutos): "));
 //
 
 //Variáveis gerais
