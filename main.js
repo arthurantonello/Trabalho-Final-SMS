@@ -7,8 +7,8 @@ const prompt = PromptSync();
 // let c = 12345;
 // let m = 2147483648;
 
-// let tempo_medio_chegada = 1;
-// let tempo_medio_atendimento = 0.5;
+// let tempo_medio_chegada = 1.5;
+// let tempo_medio_atendimento = 1.3;
 // let tempo_simulacao = 480;
 //
 
@@ -68,6 +68,7 @@ function exibirEstados() {
 | Área sob Q﹙t﹚:         ${area_sob_qt.toFixed(2)}
 | Área sob U﹙t﹚:         ${area_sob_ut.toFixed(2)}
 | Clientes atendidos:     ${clientes_atendidos}
+
 =========================
   `);
 }
@@ -120,9 +121,10 @@ function processarSaida(saida) {
         proxima_saida = relogio_simulacao + gerarSaida();
 
         calcularAreaQt();
-        removerDaFila();
+        let variavel= Number(removerDaFila());
+        
 
-        tempo_total_fila += relogio_simulacao;
+        tempo_total_fila += (relogio_simulacao - variavel);
     } else {
         calcularAreaUt();
         proxima_saida = 9999999999;
@@ -135,8 +137,10 @@ function processarSaida(saida) {
 
 //Remoção da fila
 function removerDaFila() {
+    temp = fila_chegada[0]
     fila_chegada.shift();
     numero_em_fila = fila_chegada.length;
+    return temp
 }
 
 //Calculos de área
@@ -179,6 +183,7 @@ async function iniciarSimulacao() {
 
         if (continuarExibindo === "n" || continuarExibindo === "N") {
             avancarGeracoes = true;
+    
         }
 
         if (proximo_evento === "C") processarChegada(proxima_chegada);
@@ -198,7 +203,7 @@ async function iniciarSimulacao() {
 
             console.log(`Tempo médio em fila: ${tempoMedioEmFila.toFixed(2)}`);
             console.log(`Número médio em fila: ${numeroMedioEmFila.toFixed(2)}`);
-            console.log(`Taxa de ocupação: ${taxaDeOcupacao.toFixed(2)}%\\n`);
+            console.log(`Taxa de ocupação: ${taxaDeOcupacao.toFixed(2)}%`);
 
             break;
           } else if (proxima_chegada > tempo_simulacao) {
